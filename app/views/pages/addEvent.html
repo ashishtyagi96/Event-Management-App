@@ -1,0 +1,25 @@
+<div ng-controller="mainController as main">
+
+
+    <div class="form-style-6">
+        <h1>Add Event</h1>
+        <form method="post"  ng-submit="main.submittingForm()">
+
+            <input ng-model="main.name" type="text" id="eventName" name="event_name" placeholder="Event Name...">
+            <input ng-model="main.details" style="height:80px" type="text" id="eventDetails" name="event_details" placeholder="Event Details...">
+            <input ng-model="main.location" ng-keyUp="main.initialize()"id="txtAutocomplete" type="text" id="eventLocation" name="event_location" placeholder="Event Location...">
+            <label for="start">Start date:
+                <input ng-model="main.sDate" type="date" id="start" name="event_start" min="main.startDate">
+            </label>
+
+
+
+            <label for="end">End date:
+                <input ng-model="main.eDate" type="date" id="end" name="event_end" min="main.startDate">
+            </label>
+
+            <input type="submit" value="ADD" />
+        </form>
+    </div>
+
+</div>

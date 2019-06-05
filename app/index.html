@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Event Management</title>
+    <base href="/app"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif" rel="stylesheet">
+    <link rel="stylesheet" href="views/css/indexStyle.css">
+    <link rel="stylesheet" href="views/css/addEventStyle.css">
+    <!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhbDk6sYpBA7eh4K4TMzgrY8&#45;&#45;KXQmh68&v=3.exp&libraries=places"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.css' rel='stylesheet' />
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.0/fullcalendar.min.js'></script>
+    <script>
+
+        $(document).ready(function() {
+
+            $.get("data.json", function(data, status){
+                console.log(data);
+
+                $('#calendar').fullCalendar({
+                    eventLimit: true,
+                    events:data,
+                    header: {
+                        left:"",
+                        center: "title",
+                        right: "today, prevYear, prev, next, nextYear"
+                    },
+                    buttonText: {
+                        prevYear: new moment().year()-1,
+                        nextYear: new moment().year()+1
+                    },
+                    viewRender: function (view) {
+                        var y = moment($('#calendar').fullCalendar('getDate')).year();
+                        $('.fc-prevYear-button').text(y-1);
+                        $('.fc-nextYear-button').text(y+1);
+                    }
+                });
+            });
+
+
+        });
+
+    </script>
+    <style>
+
+        body {
+            margin: 40px 10px;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+    </style>
+
+    <style>
+
+        #map {
+            margin: 0 auto;
+            height: 80%;
+            width:80%;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+
+
+
+
+</head>
+<body ng-controller="mainController as main">
+<header>
+    <div class="nav">
+        <ul>
+            <li class="home"><a href="/"><b><span style="color: red">Event</span> Management</b></a></li>
+            <li class="dropdown logo">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>E<span style="color: black">M</span></b>
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/addEvent" ng-click="main.setBoth(false)">Add Event</a></li>
+                    <li><a href="/mapView" ng-click="main.setMaps(true)">Map View</a></li>
+                    <li><a href="/calendarView" ng-click="main.setCalendar(true)">Calendar View</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</header>
+<hr>
+<div ng-view>
+
+</div>
+<div id="calendar" ng-show="main.calendar"></div>
+<div ng-show="main.maps">
+    <button onclick="todayMap()">Events Today</button>
+</div>
+<div id="map" ng-show="main.maps"></div>
+
+<script src="app.js"></script>
+<script src="controllers/mainCtrl.js"></script>
+<script src="services/mainService.js"></script>
+<script src="app.routes.js"></script>
+
+<script>
+    // This example requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    function todayMap() {
+        var todayDate=new Date().toISOString().split("T")[0];
+
+        $.get('data.json',function (z) {
+
+            var script = document.createElement('script');
+            script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+            document.getElementsByTagName('head')[0].appendChild(script);
+
+            var geocoder = new google.maps.Geocoder();
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: new google.maps.LatLng(28.7041,77.1025)
+            });
+            var i;
+            for(var i=0;i<z.length;i++){
+                console.log((z[i].start)>=Date.parse(todayDate));
+                console.log(z[i].start,z[i].end,todayDate);
+                if(Date.parse(z[i].start)<=Date.parse(todayDate)&&Date.parse(z[i].end)>=Date.parse(todayDate)){
+                    geocoder.geocode( { 'address': z[i].location}, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK)
+                        {
+                            console.log("curremt hain");
+                            var coords = results[0].geometry.location;
+                            var latLng = new google.maps.LatLng(coords.lat(),coords.lng());
+                            var marker = new google.maps.Marker({
+                                position: latLng,
+                                map: map
+                            });
+
+
+                        }
+                    });
+                }
+            }
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: new google.maps.LatLng(28.7041,77.1025)
+            });
+
+
+        });
+
+    }
+    function initMap() {
+
+
+        var address=[];
+        $.get('data.json',function (z) {
+
+            var script = document.createElement('script');
+            script.src = 'https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+            document.getElementsByTagName('head')[0].appendChild(script);
+
+            var geocoder = new google.maps.Geocoder();
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: new google.maps.LatLng(28.7041,77.1025)
+            });
+                for(var i=0;i<z.length;i++){
+                    geocoder.geocode( { 'address': z[i].location}, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK)
+                        {
+                            var coords = results[0].geometry.location;
+                            var latLng = new google.maps.LatLng(coords.lat(),coords.lng());
+                            var marker = new google.maps.Marker({
+                                position: latLng,
+                                map: map
+                            });
+
+                        }
+                    });
+                }
+
+        });
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDhbDk6sYpBA7eh4K4TMzgrY8&#45;&#45;KXQmh68&v=3.exp&libraries=places&callback=initMap">
+</script>
+
+
+</body>
+</html>
+
+
+
+
+
+

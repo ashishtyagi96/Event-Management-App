@@ -1,0 +1,150 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+.nav a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+.nav ul{
+    list-style: none;
+    padding: 18px 0 0 0;
+}
+.nav ul li{
+    display: inline;
+}
+.home{
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 2em;
+    padding-left: 60px;
+}
+.home a{
+    color: #000;
+}
+.dashboard{
+    font-size: 1.4em;
+    padding-left: 20px;
+}
+.logo{
+    border: solid 1.5px rgb(206, 209, 213);
+    border-radius: 50%;
+    padding: 18px 10px;
+    float: right;
+    margin-right: 110px;
+}
+.dashboard a{
+    color: rgb(206, 209, 213);
+}
+.mapsView{
+    font-size: 1.4em;
+    padding-left: 20px;
+}
+.mapsView a{
+    color: rgb(206, 209, 213);
+}
+.logo a{
+    color: red;
+}
+
+.flexbox-centering {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.child {
+    padding: 15px 80px;
+    width: 100%;
+
+}
+.input-title {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.input-box {
+    margin-bottom: 15px;
+}
+.form-control{
+    padding: 20px;
+    font-size: 1.2em;
+}
+.menu{
+    padding: 0 120px;
+}
+.menu ul li{
+    /*font-weight: bold;*/
+    font-size: 1.2em;
+    display: inline;
+    /*padding: 0 45px;*/
+}
+.menu ul{
+    list-style: none;
+}
+.filter_but{
+    margin: 0 120px;
+    /*background-color: snow;*/
+}
+li button {
+    background-color: white;
+    color: black;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px 20px;
+    cursor: pointer;
+    border: 2px solid #008CBA;
+    border-radius: 10px;
+}
+li button:focus{
+    background-color: #008CBA;
+    color: white;
+    outline: none;
+}
+.menu{
+    display: none;
+    padding-top: 30px;
+}
+.filter_but a{
+    text-decoration: none;
+    font-size: 1.2em;
+}
+.list_val{
+    width:88%;
+    margin: 0 6%;
+}
+
+.block_list{
+
+    width:90%;
+    margin: 0 5%;
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    padding: 5px;
+}
+.grid-item {
+    padding: 20px;
+    font-size: 1em;
+    text-align: center;
+}
+.block_list{
+    margin-top: 10px;
+    background-color: white;
+    border: solid 1px lightgrey;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
