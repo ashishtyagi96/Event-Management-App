@@ -1,0 +1,7 @@
+To start the app do the following :-
+1) clone this repository on local system.
+2) get into folder /Event-Management-App.
+3) run in terminal 'npm intsall' to download all dependencies.
+4) to start the server run the command in terminal 'node server.js'.
+5) Open in browser 'http://localhost:4000'.
+6) Your app is up and running.
